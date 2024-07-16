@@ -14,16 +14,16 @@
   <ion-card *ngFor="let item of todoList ; let i = index" class="ion-padding">
     <ion-header>
 
-      <ion-card-subtitle [style.color]="item.itemPriority === 'High' ? 'red'  : (item.itemPriority === 'Middle' ? 'orange' : 'green') ">
+      <ion-card-subtitle [style.color]="item.value.itemPriority === 'High' ? 'red'  : (item.value.itemPriority === 'Middle' ? 'orange' : 'green') ">
         {{item.itemCategory}}
       </ion-card-subtitle>
 
       <ion-item>
-        <ion-icon *ngIf="item.itemPriority === 'High' " color="danger" size="small" name="ellipse"></ion-icon>
-        <ion-icon *ngIf="item.itemPriority === 'Middle' " color="warning" size="small" name="ellipse"></ion-icon>
-        <ion-icon *ngIf="item.itemPriority === 'Low' " color="success" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="item.value.itemPriority === 'High' " color="danger" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="item.value.itemPriority === 'Middle' " color="warning" size="small" name="ellipse"></ion-icon>
+        <ion-icon *ngIf="item.value.itemPriority === 'Low' " color="success" size="small" name="ellipse"></ion-icon>
         <ion-label>
-          {{item.itemName}}
+          {{item.value.itemName}}
         </ion-label>
       </ion-item>
 
@@ -31,7 +31,7 @@
 
     <ion-card-content>
       <ion-label>
-        Due {{item.itemDate | date:'fullDate'}}
+        Due {{item.value.itemDate | date:'fullDate'}}
       </ion-label>
 
       <ion-row>
@@ -39,12 +39,12 @@
           <ion-icon name="share-outline"></ion-icon>
           
         </ion-item>
-        <ion-item lines="none">
-          <ion-icon name="checkmark-outline"></ion-icon>
+        <ion-item lines="none" (click)="update(item)">
+          <ion-icon name="sync"></ion-icon>
           
         </ion-item>
         <ion-item lines="none">
-          <ion-icon name="trash-outline" (click)="delete(i)"></ion-icon>
+          <ion-icon name="trash-outline" (click)="delete(item.key)"></ion-icon>
         </ion-item>
       </ion-row>
 

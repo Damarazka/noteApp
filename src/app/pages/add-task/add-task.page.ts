@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { TodoService } from 'src/app/services/todo.service';
 
 @Component({
   selector: 'app-add-task',
@@ -8,7 +9,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class AddTaskPage implements OnInit {
 
-  categories = ['Work', 'Personal', 'Home']
+  categories : any[]= []
+  categorySelectedCategory : any
 
   taskName: any
   taskDate: any
@@ -17,9 +19,11 @@ export class AddTaskPage implements OnInit {
 
   taskObject: any
 
-  constructor(public modalCntrl: ModalController) { }
+  constructor(public modalCntrl: ModalController, public todoService : TodoService) { }
 
   ngOnInit() {
+    this.categories.push('work')
+    this.categories.push('personal')
   }
 
   async dismiss() {
@@ -30,11 +34,15 @@ export class AddTaskPage implements OnInit {
     this.taskCategory = this.categories[index]
   }
 
-  addTask() {
-    this.taskObject = ({ itemName: this.taskName,
-                          itemDate: this.taskDate,
-                          itemPriority: this.taskPriority,
-                          itemCategory: this.taskCategory })
+  async addTask() {
+    this.taskObject = ({ itemName: this.taskName, itemDate: this.taskDate, itemPriority: this.taskPriority, itemCategory: this.taskCategory })
+                          console.log(this.taskObject)
+                          let uid = this.taskName+ this.taskDate
+                          if (uid) {
+                            await this.todoService.addTask(uid,this.taskObject)
+                          }else{
+                            console.log("can't save empty task")
+                          }
                           this.dismiss()
   }
 }
